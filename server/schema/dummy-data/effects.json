@@ -1,0 +1,17 @@
+[
+  {
+    "id": "1",
+    "name": "Balance Sheet",
+    "isSystemEffect": true
+  },
+  {
+    "id": "2",
+    "name": "Profit & Loss A/c",
+    "isSystemEffect": true
+  },
+  {
+    "id": "3",
+    "name": "Trading Account",
+    "isSystemEffect": true
+  }
+]

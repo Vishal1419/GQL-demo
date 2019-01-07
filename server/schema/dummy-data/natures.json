@@ -1,0 +1,22 @@
+[
+  {
+    "id": "1",
+    "name": "Assets",
+    "isSystemNature": true
+  },
+  {
+    "id": "2",
+    "name": "Expenses",
+    "isSystemNature": true
+  },
+  {
+    "id": "3",
+    "name": "Incomes",
+    "isSystemNature": true
+  },
+  {
+    "id": "4",
+    "name": "Liabilities",
+    "isSystemNature": true
+  }
+]
