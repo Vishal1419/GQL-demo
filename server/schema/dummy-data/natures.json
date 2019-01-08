@@ -1,22 +1,22 @@
 [
   {
-    "id": "1",
+    "_id": "1",
     "name": "Assets",
-    "isSystemNature": true
+    "isSystemGenerated": true
   },
   {
-    "id": "2",
+    "_id": "2",
     "name": "Expenses",
-    "isSystemNature": true
+    "isSystemGenerated": true
   },
   {
-    "id": "3",
+    "_id": "3",
     "name": "Incomes",
-    "isSystemNature": true
+    "isSystemGenerated": true
   },
   {
-    "id": "4",
+    "_id": "4",
     "name": "Liabilities",
-    "isSystemNature": true
+    "isSystemGenerated": true
   }
 ]

@@ -2,16 +2,16 @@
   {
     "id": "1",
     "name": "Balance Sheet",
-    "isSystemEffect": true
+    "isSystemGenerated": true
   },
   {
     "id": "2",
     "name": "Profit & Loss A/c",
-    "isSystemEffect": true
+    "isSystemGenerated": true
   },
   {
     "id": "3",
     "name": "Trading Account",
-    "isSystemEffect": true
+    "isSystemGenerated": true
   }
 ]
