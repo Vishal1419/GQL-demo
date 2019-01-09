@@ -1,25 +1,20 @@
+const mongoose = require('mongoose');
+
 const Group = require('../models/group');
-const db = require('../db');
-const groups = require('../schema/dummy-data/groups.json').map(group => new Group({
+const groups = require('./seed-data/groups.json').map(group => ({
   ...group,
-  effectIds: group.effectIds.map(effectId => {
-    db.
-  }),
+  _id: mongoose.Types.ObjectId(`GRP${group._id}`.padStart(12, 0)),
+  parentId: mongoose.Types.ObjectId(`GRP${group.parentId}`.padStart(12, 0)),
+  effectIds: group.effectIds.map(effectId =>
+    mongoose.Types.ObjectId(`EFT${effectId}`.padStart(12, 0))
+  ),
+  natureId: mongoose.Types.ObjectId(`NAT${group.natureId}`.padStart(12, 0)),
 }));
 
-let done = 0;
-
-for(let i = 0; i < groups.length; i++)
-{
-  groups[i].save((err, result) => {
-    done++;
-    if(done == groups.length){
-      exit();
-    }
-  });
-}
-
-function exit() {
-  console.log('groups seeding succeeded');
-  db.then(database => database.connection.close());
+module.exports = {
+  seed: (callback) => {
+    Group.insertMany(groups, (err, result) => {
+      callback(err, result);
+    });
+  }
 }

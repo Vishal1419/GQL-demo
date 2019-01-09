@@ -1,20 +1,15 @@
+const mongoose = require('mongoose');
+
 const Effect = require('../models/effect');
-const db = require('../db');
-const effects = require('../schema/dummy-data/effects.json').map(effect => new Effect(effect));
+const effects = require('./seed-data/effects.json').map(effect => ({
+  ...effect,
+  _id: mongoose.Types.ObjectId(`EFT${effect._id}`.padStart(12, 0)),
+}));
 
-let done = 0;
-
-for(let i = 0; i < effects.length; i++)
-{
-  effects[i].save((err, result) => {
-    done++;
-    if(done == effects.length){
-      exit();
-    }
-  });
-}
-
-function exit() {
-  console.log('effects seeding succeeded');
-  db.then(database => database.connection.close());
+module.exports = {
+  seed: (callback) => {
+    Effect.insertMany(effects, (err, result) => {
+      callback(null, result);
+    });
+  }
 }

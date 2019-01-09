@@ -1,17 +1,22 @@
 [
   {
     "_id": "1",
-    "name": "Balance Sheet",
+    "name": "Assets",
     "isSystemGenerated": true
   },
   {
     "_id": "2",
-    "name": "Profit & Loss A/c",
+    "name": "Expenses",
     "isSystemGenerated": true
   },
   {
     "_id": "3",
-    "name": "Trading Account",
+    "name": "Incomes",
+    "isSystemGenerated": true
+  },
+  {
+    "_id": "4",
+    "name": "Liabilities",
     "isSystemGenerated": true
   }
 ]

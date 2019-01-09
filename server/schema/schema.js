@@ -1,4 +1,5 @@
 const graphql = require('graphql');
+
 const dummyGroups = require('./dummy-data/groups.json');
 const dummyEffects = require('./dummy-data/effects.json');
 const dummyNatures = require('./dummy-data/natures.json');
