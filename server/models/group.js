@@ -5,7 +5,7 @@ const groupSchema = new Schema({
   name: String,
   alias: String,
   parentId: String,
-  effectIds: String,
+  effectIds: [String],
   natureId: String,
   isSystemGenerated: Boolean,
   mailing: Boolean,

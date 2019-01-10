@@ -30,5 +30,6 @@ async.parallel(
 );
 
 const exit = () => {
+  console.log('disconnect database');
   db.then(database => database.connection.close());
 }

@@ -1,12 +1,13 @@
 const graphql = require('graphql');
 
-const dummyGroups = require('./dummy-data/groups.json');
-const dummyEffects = require('./dummy-data/effects.json');
-const dummyNatures = require('./dummy-data/natures.json');
+const Effect = require('../models/effect');
+const Nature = require('../models/nature');
+const Group = require('../models/group');
 
 const {
   GraphQLSchema,
   GraphQLObjectType,
+  GraphQLNonNull,
   GraphQLID,
   GraphQLString,
   GraphQLBoolean,
@@ -22,19 +23,19 @@ const GroupType = new GraphQLObjectType({
     parentGroup: {
       type: GroupType,
       resolve(parent, args) {
-        return dummyGroups.find(group => group.id === parent.parentId);
+        return Group.findById(parent.parentId);
       },
     },
     effects: {
       type: new GraphQLList(EffectType),
       resolve(parent, args) {
-        return (parent.effectIds && parent.effectIds.map(effectId => dummyEffects.find(effect => effect.id === effectId))) || [];
+        return (parent.effectIds && parent.effectIds.map(effectId => Effect.findById(effectId))) || [];
       },
     },
     nature: {
       type: NatureType,
       resolve(parent, args) {
-        return dummyNatures.find(nature => nature.id === parent.natureId);
+        return Nature.findById(parent.natureId);
       },
     },
     isSystemGenerated: { type: GraphQLBoolean },
@@ -54,7 +55,7 @@ const EffectType = new GraphQLObjectType({
     groups: {
       type: new GraphQLList(GroupType),
       resolve(parent, args) {
-        return dummyGroups.filter(group => group.effectId === parent.id);
+        return Group.find({ effectId: parent._id });
       },
     },
   }),
@@ -69,7 +70,7 @@ const NatureType = new GraphQLObjectType({
     groups: {
       type: new GraphQLList(GroupType),
       resolve(parent, args) {
-        return dummyGroups.filter(group => group.natureId === parent.id);
+        return Group.find({ natureId: parent._id });
       },
     },
   }),
@@ -82,40 +83,96 @@ const RootQuery = new GraphQLObjectType({
       type: GroupType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
-        // code to get data from db/other source
-        return dummyGroups.find(group => group.id === args.id);
+        return Group.findById(args.id);
       },
     },
     effect: {
       type: EffectType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
-        return dummyEffects.find(effect => effect.id === args.id);
+        return Effect.findById(args.id);
       },
     },
     nature: {
       type: NatureType,
       args: { id: { type: GraphQLID} },
       resolve(parent, args) {
-        return dummyNatures.find(nature => nature.id === args.id);
+        return Nature.findById(args.id);
       }
     },
     groups: {
       type: new GraphQLList(GroupType),
       resolve(parent, args) {
-        return dummyGroups;
+        return Group.find({});
       },
     },
     effects: {
       type: new GraphQLList(EffectType),
       resolve(parent, args) {
-        return dummyEffects;
+        return Effect.find({});
       },
     },
     natures: {
       type: new GraphQLList(NatureType),
       resolve(parent, args) {
-        return dummyNatures;
+        return Nature.find({});
+      },
+    },
+  },
+});
+
+const Mutation = new GraphQLObjectType({
+  name: 'Mutation',
+  fields: {
+    addEffect: {
+      type: EffectType,
+      args: {
+        name: { type: GraphQLNonNull(GraphQLString) },
+      },
+      resolve(parent, args) {
+        let effect = new Effect({
+          name: args.name,
+          isSystemGenerated: false,
+        });
+        return effect.save();
+      },
+    },
+    addNature: {
+      type: NatureType,
+      args: {
+        name: { type: GraphQLNonNull(GraphQLString) },
+      },
+      resolve(parent, args) {
+        const nature = new Nature({
+          name: args.name,
+          isSystemGenerated: false,
+        });
+        return nature.save();
+      },
+    },
+    addGroup: {
+      type: GroupType,
+      args: {
+        name: { type: GraphQLNonNull(GraphQLString) },
+        alias: { type: GraphQLString },
+        parentId: { type: GraphQLNonNull(GraphQLID) },
+      },
+      async resolve(parent, args) {
+        const parentGroup = await Group.findById(args.parentId);
+        console.log(parentGroup);
+        const group = new Group({
+          name: args.name,
+          alias: args.alias,
+          parentId: args.parentId,
+          effectIds: parentGroup.effectIds,
+          natureId: parentGroup.natureId,
+          isSystemGenerated: false,
+          mailing: parentGroup.mailing,
+          contact: parentGroup.contact,
+          bank: parentGroup.bank,
+          tax: parentGroup.tax,
+        });
+        return group.save();
       },
     },
   },
@@ -123,4 +180,5 @@ const RootQuery = new GraphQLObjectType({
 
 module.exports = new GraphQLSchema({
   query: RootQuery,
+  mutation: Mutation,
 });
