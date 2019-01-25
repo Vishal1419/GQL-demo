@@ -23,7 +23,7 @@ const Natures = () => (
             {
               header: 'id',
               accessor: 'id',
-              width: '100px',
+              width: '200px',
             },
             {
               header: 'Effects',
@@ -48,7 +48,7 @@ const Natures = () => (
             {
               header: 'actions',
               accessor: 'name',
-              width: 'auto',
+              width: '100px',
             },
           ]}
         />

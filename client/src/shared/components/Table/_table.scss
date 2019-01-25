@@ -1,10 +1,16 @@
 .u-table {
   width: 100%;
   border-collapse: collapse;
-  /* only for dev */
-  th,
-  td {
-    border: 1px solid black;
-    padding: 5px;
+  .row {
+    height: 60px;
+  }
+  .col {
+    border-bottom: 1px solid $dark-border-color;
+    padding: $standard-padding;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
   }
 }
+
